@@ -37,21 +37,33 @@ define(["knockout", "text!./survey_list.html"], function(ko, template ) {
 		};
 
 		this.list = function( )
-		{
+		{			
 			console.log( "listItems " );
-			$.post('/api/survey/list','{"session":"%s"}'%app_share.session(), function(data) {
-				//console.log( "listItems ... ", data );
-				js =  JSON.parse(data);
-				
-				console.log( js );
-				
-				self.Items([]);
-				
-				/*for(var di in js)
-				{
-					self.Items.push(new Item(self, js[di]));
-				}*/				
-			});
+			$.ajax({
+				type : "POST",
+				url : "/api/survey/list",
+				data: JSON.stringify(
+					{ session: app_share.session()						
+					}, null, '\t'),
+				contentType: 'application/json;charset=UTF-8',
+				success: function(data) {					
+					j =  JSON.parse(data);
+					console.log("JSON: ", j );
+					if (j.result == 'OK')
+					{
+						self.Items([])
+						for(var di in j.data)
+						{
+							self.Items.push(new Item(self, j.data[di]));
+						}
+					}
+					else
+					{
+						self.error( "ERROR" + j.reason )
+					}					
+				}
+			}); 	
+			
 		};
 
 		this.edit = function ( Item) {

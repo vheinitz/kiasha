@@ -201,10 +201,13 @@ def api_survey_list():
             print sd
             s = DBSession()
             q = s.query(Survey).filter_by(survey_owner=sd['user_id'] )
+            ret_data = []
             for srv in q:
-                print srv
+                ret_data.append( srv.toDict() )
+            
+            #print json.dumps(ret_data)
             s.close()
-            data = '{"result":"OK","info":""}'
+            data = '{"result":"OK","data":%s}'%(json.dumps(ret_data))
     except Exception as e:
         print str(e)    
     

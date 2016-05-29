@@ -7,6 +7,11 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 class User(Base):
+    def toJson(self):
+       return json.dumps( {c.name: getattr(self, c.name) for c in self.__table__.columns} )
+    def toDict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+       
     __tablename__ = 'user'
     user_name = Column( String(50), nullable=False )
     user_password = Column( String(50), nullable=False )
@@ -16,6 +21,11 @@ class User(Base):
     user_id = Column(Integer, primary_key = True)
 
 class Question(Base):
+    def toJson(self):
+       return json.dumps( {c.name: getattr(self, c.name) for c in self.__table__.columns} )
+    def toDict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+       
     __tablename__ = 'question'
     question_short_text = Column( String, nullable=False )
     question_text = Column( String )
@@ -28,6 +38,11 @@ class Question(Base):
     question_id = Column(Integer, primary_key = True)
     
 class Survey(Base):
+    def toJson(self):
+       return json.dumps( {c.name: getattr(self, c.name) for c in self.__table__.columns} )
+    def toDict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns} 
+       
     __tablename__ = 'survey'
     survey_name = Column( String(200), nullable=False )
     survey_info = Column( String, nullable=False )
@@ -37,6 +52,11 @@ class Survey(Base):
     survey_id = Column(Integer, primary_key = True)
     
 class SurveyQuestion(Base):
+    def toJson(self):
+       return json.dumps( {c.name: getattr(self, c.name) for c in self.__table__.columns} )
+    def toDict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+       
     __tablename__ = 'survey_question'
     survey_question_order = Column(Integer)
     survey_question_survey_id = Column(Integer, ForeignKey("survey.survey_id"))
