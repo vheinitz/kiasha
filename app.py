@@ -172,12 +172,11 @@ def api_survey_add():
 @app.route('/api/survey/<int:id>/delete', methods=['GET', 'POST'])
 def api_survey_delete(id): 
     data = '{"result":"error","reason":"Undefined"}'
-    try:
-        s = DBSession()        
-        
+    try:                      
         d = request.json
         print "REeurst", d, "ID", id
         if d['session'] in session:
+            s = DBSession()  
             q = s.query(Survey).filter_by(survey_id=id).one()
             if q:
                 s.delete(q)
@@ -215,15 +214,19 @@ def api_survey_list():
 
 @app.route('/api/survey/<int:id>/select', methods=['GET', 'POST'])
 def api_survey_select(id): 
-    s = DBSession()
-    data = '{"result":"error","reason":"TODO"}'
-    d = request.json
-    print d
-    if d['session'] in session:
-        
-        s.commit()
-        s.close()
-        data = '{"result":"OK","data":{"TODO for id":%d}}'%(id)
+    data = '{"result":"error","reason":"Undefined"}'
+    try:                      
+        d = request.json
+        print "REeurst", d, "ID", id
+        if d['session'] in session:
+            s = DBSession()  
+            srv = s.query(Survey).filter_by(survey_id=id).one()
+            if srv:                
+                s.close()
+                data = '{"result":"OK","data":%s}'%( srv.toJson() )
+    except Exception as e:
+        print str(e)    
+    
     return data
     
 @app.route('/api/survey/<int:id>/question/add', methods=['GET', 'POST'])

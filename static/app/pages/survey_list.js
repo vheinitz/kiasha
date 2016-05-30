@@ -67,8 +67,10 @@ define(["knockout", "text!./survey_list.html"], function(ko, template ) {
 		};
 
 		this.edit = function ( Item) {
-		    //app_share.main_view_args(Item.data.id)
-		    app_share.main_view('Item');		  
+		    app_share.main_view_args = [Item.data];
+			console.log("Selecting Survey: ", Item.data, "ARGS: ", app_share.main_view_args );
+			
+		    app_share.main_view('survey');		  
 		};
 		
 		this.remove = function ( Item) {

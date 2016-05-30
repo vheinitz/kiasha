@@ -1,7 +1,7 @@
 //console.log( "START: Startup" )
 var app_share = {
     main_view: null,
-    main_view_args: null,
+    main_view_args: [],
     session: null,
 	app_pages : ["navbar", "home", "login", "survey_list", "survey", "users", "topics"],
 	app_components : ["userdashboard","topic"],
@@ -10,7 +10,7 @@ var app_share = {
 define(['jquery', 'knockout', './router', 'bootstrap', 'knockout-projections'], function($, ko, router) {
 
     app_share.main_view = ko.observable('login');
-    app_share.main_view_args = ko.observableArray('');
+    //app_share.main_view_args = ko.observableArray('');
     app_share.session = ko.observable(null);
 
 	//router.app_components = app_components;
