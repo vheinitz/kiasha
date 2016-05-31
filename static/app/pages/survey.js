@@ -19,7 +19,7 @@ define(["knockout", "text!./survey.html"], function(ko, template ) {
 	
  	function Model()
 	{
-	    console.log("Items Model");
+	    console.log("Survey data Model");
 	    var self = this;
 		this.Items = ko.observableArray();
 		this.error = ko.observable(null);
@@ -35,7 +35,7 @@ define(["knockout", "text!./survey.html"], function(ko, template ) {
 		this.init = function() {	   
 			self.survey_id( app_share.main_view_args[0].survey_id )
 			self.survey_name( app_share.main_view_args[0].survey_name )
-			
+			self.getData();
 			//console.log( "init ID", self.survey_id(), app_share.main_view_args );
 		};
 		
@@ -44,7 +44,7 @@ define(["knockout", "text!./survey.html"], function(ko, template ) {
 			console.log( "getData " );
 			$.ajax({
 				type : "POST",
-				url : "/api/survey/" + self.survey_id() + "select",
+				url : "/api/survey/" + self.survey_id() + "/select",
 				data: JSON.stringify(
 					{ session: app_share.session()						
 					}, null, '\t'),
@@ -54,7 +54,11 @@ define(["knockout", "text!./survey.html"], function(ko, template ) {
 					console.log("JSON: ", j );
 					if (j.result == 'OK')
 					{
-						
+						self.survey_id( j.data.survey_id )
+						self.survey_name( j.data.survey_name )
+						self.survey_info( j.data.survey_info )
+						self.survey_instructions( j.data.survey_instructions )
+						self.survey_help( j.data.survey_help )
 					}
 					else
 					{
